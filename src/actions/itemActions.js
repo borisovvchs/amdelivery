@@ -1,4 +1,4 @@
-import {CITY_SELECTED, DATA_FIRSTLOAD, GET_ID, ID_NULL, PLUS_QUANT, MINUS_QUANT, ADD_TO_CART} from "./types.js"
+import {CITY_SELECTED, DATA_FIRSTLOAD, GET_ID, ID_NULL, PLUS_QUANT, MINUS_QUANT, ADD_TO_CART, CHANGE_QUANT, PLUS_QUANT_CART, MINUS_QUANT_CART, ADD_TO_ORDER } from "./types.js"
 
 
 export const setCitySelected = () => {
@@ -48,5 +48,37 @@ export const addItemToCart = ({id}, quantity) => {
             id,
             quantity
         }
+    }
+}
+
+export const changeItemQuant = ({id}, quantity) => {
+    return {
+        type: CHANGE_QUANT,
+        payload: {
+            id, 
+            quantity
+        }
+    }
+}
+
+
+export const plusQuantinCart = (id) => {
+    return {
+        type: PLUS_QUANT_CART,
+        payload: id
+    }
+}
+
+export const minusQuantinCart = (id) => {
+    return {
+        type: MINUS_QUANT_CART,
+        payload: id
+    }
+}
+
+export const fromCartInOrder = (items) => {
+    return {
+        type: ADD_TO_ORDER,
+        payload: items
     }
 }

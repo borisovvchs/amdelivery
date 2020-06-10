@@ -2,14 +2,13 @@ import React from 'react';
 import './modal-adding-to-cart.sass';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {setIdAndQuantToNull, plusQuant, minusQuant, addItemToCart} from '../../actions/itemActions.js';
+import {setIdAndQuantToNull, plusQuant, minusQuant, addItemToCart, changeItemQuant} from '../../actions/itemActions.js';
 
 
-const ModalAddingToCart = ({idItemForAdding, allItems, setIdAndQuantToNull, quantity, plusQuant, minusQuant, addItemToCart, itemsInCart}) => {
+const ModalAddingToCart = ({idItemForAdding, allItems, setIdAndQuantToNull, quantity, plusQuant, minusQuant, addItemToCart, itemsInCart, changeItemQuant}) => {
     const itemForRender = allItems.filter(item => (item.id === idItemForAdding) ? item : null);
     const itemObj = itemForRender[0];
-    const {name, ingredients, imgUrl, price} = itemObj;
-    console.log(itemsInCart);
+    const {id, name, ingredients, imgUrl, price} = itemObj;
     return (
         <div className="overlay">
             
@@ -38,7 +37,10 @@ const ModalAddingToCart = ({idItemForAdding, allItems, setIdAndQuantToNull, quan
                             <button className="modal-adding-to-cart__adding-block__counter__plus" onClick={(e) => plusQuant(e)}>+</button>
                             
                         </div>
-                        <button className="modal-adding-to-cart__adding-block__button" onClick={(e) => addItemToCart(itemObj, quantity, e)}>
+                        <button className="modal-adding-to-cart__adding-block__button"
+                            onClick={(itemsInCart.find(item => item.id === id) === undefined) ?
+                                (e) => addItemToCart(itemObj, quantity, e) :
+                                (e) => changeItemQuant(itemObj, quantity, e)}>
                             <div className="modal-adding-to-cart__adding-block__button__title">Добавить</div>
                             <div className="modal-adding-to-cart__adding-block__button__price">{price*quantity} ₽</div>
                         </button>
@@ -57,7 +59,8 @@ ModalAddingToCart.propTypes = {
     plusQuant: PropTypes.func.isRequired,
     minusQuant: PropTypes.func.isRequired,
     addItemToCart: PropTypes.func.isRequired,
-    itemsInCart: PropTypes.array
+    itemsInCart: PropTypes.array,
+    changeItemQuant: PropTypes.func
 }
 
 
@@ -72,4 +75,4 @@ const mapStateToProps = ({idItemForAdding, allItems, quantity, itemsInCart}) => 
 }
 
 
-export default connect(mapStateToProps, {setIdAndQuantToNull, plusQuant, minusQuant, addItemToCart})(ModalAddingToCart);
+export default connect(mapStateToProps, {setIdAndQuantToNull, plusQuant, minusQuant, addItemToCart, changeItemQuant})(ModalAddingToCart);
